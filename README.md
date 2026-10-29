@@ -27,7 +27,9 @@ Marketing > SEO & Search > Search Synonyms, Search Terms.
 
 The search box template is the Zero theme's
 `Magento_Search/templates/form.mini.phtml`; the suggestions endpoint is
-Zero_Core's `zero/search/suggest`, its template replaced here.
+Zero_Core's `zero/search/suggest`, its template replaced here. Its answers
+are full page cached per query, customer group and currency, tagged with the
+products they show (0.6 s a keystroke uncached on 100 000 products).
 
 ## Install
 

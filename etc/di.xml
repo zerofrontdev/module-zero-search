@@ -11,4 +11,23 @@
     <type name="Magento\Elasticsearch\SearchAdapter\Query\Builder\MatchQuery">
         <plugin name="zero_search_typos" type="Zero\Search\Plugin\FuzzyMatch"/>
     </type>
+    <!-- Global, not frontend: the search box (frontend) and zeroSearchSuggest (GraphQL) share the sources. -->
+    <!--
+        What a search finds besides products. Other modules add theirs here
+        (Zero_Brands: brands, Zero_Blog: posts); the sort order places them.
+    -->
+    <type name="Zero\Search\Model\Sources">
+        <arguments>
+            <argument name="sources" xsi:type="array">
+                <item name="categories" xsi:type="array">
+                    <item name="source" xsi:type="object">Zero\Search\Model\Source\Categories</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+                <item name="pages" xsi:type="array">
+                    <item name="source" xsi:type="object">Zero\Search\Model\Source\Pages</item>
+                    <item name="sortOrder" xsi:type="number">40</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>

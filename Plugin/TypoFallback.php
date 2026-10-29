@@ -22,11 +22,12 @@ use Zero\Search\Model\Typos;
  */
 class TypoFallback
 {
-    private const REQUESTS = ['quick_search_container'];
 
     public function __construct(
         private readonly Typos $typos,
-        private readonly Config $config
+        private readonly Config $config,
+        /** @var list<string> the search requests covered; other areas add theirs (Zero_SearchGraphQl: the GraphQL ones) */
+        private readonly array $requests = ['quick_search_container']
     ) {
     }
 
@@ -34,7 +35,7 @@ class TypoFallback
     {
         $response = $proceed($request);
         if ($this->typos->isFuzzy()
-            || !in_array($request->getName(), self::REQUESTS, true)
+            || !in_array($request->getName(), $this->requests, true)
             || $this->total($response) > 0
             || !$this->config->forgivesTypos()
         ) {
