@@ -9,7 +9,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="Magento\Framework\View\Element\Template" name="zero.search.more" before="search.result"
+            <block class="Zero\Search\Block\Results" name="zero.search.more" before="search.result"
                    template="Zero_Search::results.phtml">
                 <arguments>
                     <argument name="search" xsi:type="object">Zero\Search\ViewModel\Search</argument>

@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace Zero\Search\Model\Source;
 
+use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Zero\Search\Model\SourceInterface;
@@ -58,6 +59,7 @@ class Categories implements SourceInterface
                 'name' => (string) $category->getName(),
                 'url' => (string) $category->getUrl(),
                 'note' => implode(' › ', array_filter(array_map(static fn ($id) => $names[(int) $id] ?? '', $path))),
+                'tags' => [Category::CACHE_TAG . '_' . (int) $category->getId()],
             ];
         }
 

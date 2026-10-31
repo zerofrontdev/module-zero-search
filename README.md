@@ -15,7 +15,10 @@ Store search that forgives typos and finds more than products.
   Tops"), brands (Zero_Brands), blog posts (Zero_Blog), CMS pages. Each
   word of the query must be in the name. Another module adds its own:
   `Zero\Search\Model\SourceInterface`, registered on
-  `Zero\Search\Model\Sources` in its `etc/frontend/di.xml`.
+  `Zero\Search\Model\Sources` in its `etc/frontend/di.xml`. A match may
+  carry `tags`, the cache tags of what it links (categories `cat_c_<id>`,
+  pages `cms_p_<id>`): the full page cached suggestions and results pages
+  are tagged with them, so saving that category or page cleans them.
 - **Popular searches**: the empty search box (on first focus) and a search
   with no results offer the store's most searched terms that found
   something (Marketing > Search Terms: untick "Display in Suggested Terms"
@@ -51,6 +54,8 @@ Part of [`zerofront/zero`](https://zerofront.dev), which installs the Zero theme
 
 `Test/Unit` (fuzzy clauses, sources); `dev/tests/zero-e2e/tests/search.spec.ts`
 (`ZERO_SEARCH_TYPO`, `ZERO_SEARCH_CATEGORY` for a catalog other than Luma's).
+
+What changed in each release: [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 

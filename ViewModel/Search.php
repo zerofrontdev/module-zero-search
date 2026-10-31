@@ -10,6 +10,7 @@ namespace Zero\Search\ViewModel;
 
 use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Catalog\Model\Layer\Resolver as LayerResolver;
+use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\View\LayoutInterface;
 use Magento\Search\Helper\Data as SearchHelper;
@@ -23,13 +24,18 @@ use Zero\Search\Model\Typos;
 /**
  * Besides products, for the search box's suggestions and the results page:
  * what else the query finds (categories, brands, posts, pages), the store's
- * popular searches, and whether typos were forgiven.
+ * popular searches, and whether typos were forgiven. Its identities are the
+ * cache tags of what more() listed (Zero_Core's Block\Search\Suggest adds
+ * them to the suggestions' response).
  */
-class Search implements ArgumentInterface
+class Search implements ArgumentInterface, IdentityInterface
 {
     /** In the search box: a few of each; above the results: a row. */
     public const SUGGEST_LIMIT = 3;
     public const RESULTS_LIMIT = 8;
+
+    /** @var string[] the cache tags of the matches more() returned */
+    private array $identities = [];
 
     public function __construct(
         private readonly Config $config,
@@ -58,7 +64,28 @@ class Search implements ArgumentInterface
             return [];
         }
 
-        return $this->sources->find($this->queryText(), $this->storeId(), $limit);
+        $found = $this->sources->find($this->queryText(), $this->storeId(), $limit);
+        foreach ($found as $group) {
+            foreach ($group['items'] as $item) {
+                foreach ((array) ($item['tags'] ?? []) as $tag) {
+                    if (is_string($tag) && $tag !== '') {
+                        $this->identities[] = $tag;
+                    }
+                }
+            }
+        }
+
+        return $found;
+    }
+
+    /**
+     * Cache tags of the matches more() returned.
+     *
+     * @return string[]
+     */
+    public function getIdentities(): array
+    {
+        return array_values(array_unique($this->identities));
     }
 
     /**

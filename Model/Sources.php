@@ -26,7 +26,7 @@ class Sources
     }
 
     /**
-     * @return array<string, array{title: string, items: array<int, array{name: string, url: string}>}>
+     * @return array<string, array{title: string, items: array<int, array{name: string, url: string, note?: string, tags?: string[]}>}>
      */
     public function find(string $query, int $storeId, int $limit): array
     {

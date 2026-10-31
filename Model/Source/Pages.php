@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace Zero\Search\Model\Source;
 
+use Magento\Cms\Model\Page;
 use Magento\Cms\Model\ResourceModel\Page\CollectionFactory;
 use Magento\Framework\UrlInterface;
 use Zero\Search\Model\SourceInterface;
@@ -44,7 +45,11 @@ class Pages implements SourceInterface
         }
         $items = [];
         foreach ($collection as $page) {
-            $items[] = ['name' => (string) $page->getTitle(), 'url' => $this->url->getUrl('', ['_direct' => (string) $page->getIdentifier()])];
+            $items[] = [
+                'name' => (string) $page->getTitle(),
+                'url' => $this->url->getUrl('', ['_direct' => (string) $page->getIdentifier()]),
+                'tags' => [Page::CACHE_TAG . '_' . (int) $page->getId()],
+            ];
         }
 
         return $items;
